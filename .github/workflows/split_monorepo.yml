@@ -1,0 +1,54 @@
+name: Split Monorepo
+
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - 'master'
+
+jobs:
+  split_monorepo:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        package:
+          - local_path: 'Core'
+            split_repository: 'core'
+          - local_path: 'Users'
+            split_repository: 'users'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # no tag
+      - if: "!startsWith(github.ref, 'refs/tags/')"
+        name: Build ${{ matrix.package }}
+        uses: "symplify/monorepo-split-github-action@2.1"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          branch: "master"
+          package_directory: 'src/${{ matrix.package.local_path }}'
+          repository_organization: 'zentlix'
+          repository_name: '${{ matrix.package.split_repository }}'
+          user_name: "GitHub Action"
+          user_email: "action@github.com"
+
+      # with tag
+      - if: "startsWith(github.ref, 'refs/tags/')"
+        name: Monorepo Tagged Split of ${{ matrix.package }}
+        uses: "symplify/monorepo-split-github-action@2.1"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          tag: ${GITHUB_REF#refs/tags/}
+          branch: "master"
+          package_directory: 'src/${{ matrix.package.local_path }}'
+          repository_organization: 'zentlix'
+          repository_name: '${{ matrix.package.split_repository }}'
+          user_name: "GitHub Action"
+          user_email: "action@github.com"

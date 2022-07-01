@@ -1,0 +1,50 @@
+{
+    "name": "zentlix/zentlix",
+    "type": "library",
+    "description": "Content management system based on Symfony framework.",
+    "homepage": "https://zentlix.io",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/zentlix/zentlix/issues",
+        "source": "https://github.com/zentlix/zentlix"
+    },
+    "authors": [
+        {
+            "name": "Maxim Smakouz",
+            "email": "m.smakouz@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zentlix\\Core\\": "src/Core/src/",
+            "Zentlix\\Users\\": "src/Users/src/"
+        }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "phpunit/phpunit": "^9.5.20",
+        "symplify/monorepo-builder": "^10.1",
+        "vimeo/psalm": "^4.22",
+        "weirdan/doctrine-psalm-plugin": "^2.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Core\\": "src/Core/tests/",
+            "Tests\\Users\\": "src/Users/tests/"
+        }
+    },
+    "replace": {
+        "zentlix/core": "self.version",
+        "zentlix/users": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
