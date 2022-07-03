@@ -1,0 +1,3 @@
+users:
+    locale:
+        code_already_exist: 'Язык с кодом %s уже существует.'

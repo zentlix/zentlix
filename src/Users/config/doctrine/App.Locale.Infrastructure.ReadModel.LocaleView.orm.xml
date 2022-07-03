@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Zentlix\Users\App\Locale\Infrastructure\ReadModel\LocaleView" table="zx_locales">
+        <id name="uuid" type="uuid" column="uuid"/>
+        <field name="title" column="title" type="string" length="255" />
+        <field name="code" column="code" type="string" length="16" unique="true"/>
+        <field name="countryCode" column="country_code" type="string" length="16"/>
+        <field name="sort" column="sort" type="integer"/>
+    </entity>
+</doctrine-mapping>
