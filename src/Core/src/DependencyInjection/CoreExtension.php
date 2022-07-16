@@ -16,8 +16,8 @@ final class CoreExtension extends Extension implements PrependExtensionInterface
     {
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__, 2).'/config'));
 
-        $loader->load('bus.php');
         $loader->load('services.php');
+        $loader->load('bus.php');
     }
 
     public function prepend(ContainerBuilder $container)

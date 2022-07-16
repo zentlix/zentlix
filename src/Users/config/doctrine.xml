@@ -6,7 +6,7 @@
         https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <doctrine:config>
-        <doctrine:orm auto-mapping="true">
+        <doctrine:orm auto-mapping="false">
             <doctrine:mapping
                     name="users"
                     type="xml"

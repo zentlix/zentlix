@@ -27,4 +27,4 @@ return (new PhpCsFixer\Config())
             ->notPath('#/Fixtures/#')
     )
     ->setCacheFile('.php-cs-fixer.cache')
-    ;
+;

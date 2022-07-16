@@ -19,9 +19,15 @@ final class UsersExtension extends Extension implements PrependExtensionInterfac
 
         $loader->load('bus.php');
         $loader->load('commands.php');
-        $loader->load('repositories.php');
+        $loader->load('controllers.php');
         $loader->load('services.php');
+        $loader->load('projections.php');
         $loader->load('specifications.php');
+
+        switch ($container->getParameter('read_engine')) {
+            default:
+                $loader->load('doctrine_repositories.php');
+        }
     }
 
     public function prepend(ContainerBuilder $container)
