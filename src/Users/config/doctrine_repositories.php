@@ -4,32 +4,17 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Broadway\EventStore\EventStore;
-use Doctrine\ORM\EntityManagerInterface;
+use Zentlix\Users\App\Locale\Domain\Repository\CheckLocaleByCodeInterface;
+use Zentlix\Users\App\Locale\Domain\Repository\LocaleRepositoryInterface;
+use Zentlix\Users\App\Locale\Infrastructure\ReadModel\Repository;
+use Zentlix\Users\App\Locale\Infrastructure\Repository\LocaleStore;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
-        ->set(
-            \Zentlix\Users\App\Locale\Infrastructure\ReadModel\Repository\LocaleRepositoryInterface::class,
-            \Zentlix\Users\App\Locale\Infrastructure\ReadModel\Repository\DoctrineLocaleRepository::class
-        )
-            ->args([
-                service(EntityManagerInterface::class),
-                service('knp_paginator'),
-            ])
+        ->alias(Repository\LocaleRepositoryInterface::class, Repository\DoctrineLocaleRepository::class)
 
-        ->set(
-            \Zentlix\Users\App\Locale\Domain\Repository\LocaleRepositoryInterface::class,
-            \Zentlix\Users\App\Locale\Infrastructure\Repository\LocaleStore::class
-        )
-            ->args([
-                service(EventStore::class),
-                service('broadway.event_handling.event_bus'),
-            ])
+        ->alias(LocaleRepositoryInterface::class, LocaleStore::class)
 
-        ->alias(
-            \Zentlix\Users\App\Locale\Domain\Repository\CheckLocaleByCodeInterface::class,
-            \Zentlix\Users\App\Locale\Infrastructure\ReadModel\Repository\LocaleRepositoryInterface::class
-        )
+        ->alias(CheckLocaleByCodeInterface::class, Repository\DoctrineLocaleRepository::class)
     ;
 };

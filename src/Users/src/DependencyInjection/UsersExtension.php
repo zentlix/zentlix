@@ -21,6 +21,7 @@ final class UsersExtension extends Extension implements PrependExtensionInterfac
         $loader->load('commands.php');
         $loader->load('controllers.php');
         $loader->load('services.php');
+        $loader->load('repositories.php');
         $loader->load('projections.php');
         $loader->load('specifications.php');
 

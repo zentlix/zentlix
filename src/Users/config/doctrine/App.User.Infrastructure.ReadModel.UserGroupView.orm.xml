@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Zentlix\Users\App\User\Infrastructure\ReadModel\UserGroupView" table="zx_groups">
+        <id name="uuid" type="uuid" column="uuid"/>
+        <field name="title" column="title" type="string" length="255" />
+        <field name="code" column="code" type="string" length="64" unique="true"/>
+        <field name="sort" column="sort" type="integer">
+            <options>
+                <option name="default">1</option>
+            </options>
+        </field>
+        <field name="role" column="role" type="string" length="64" enum-type="Zentlix\Users\App\User\Domain\Role">
+            <options>
+                <option name="default">ROLE_USER</option>
+            </options>
+        </field>
+        <field name="rights" column="rights" type="json"/>
+    </entity>
+</doctrine-mapping>

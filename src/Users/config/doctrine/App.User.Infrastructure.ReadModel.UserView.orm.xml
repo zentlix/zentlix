@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Zentlix\Users\App\User\Infrastructure\ReadModel\UserView" table="zx_users">
+        <id name="uuid" type="uuid" column="uuid"/>
+        <field name="email" column="email" type="string" length="255" unique="true"/>
+        <field name="firstName" column="first_name" type="string" length="255" nullable="true"/>
+        <field name="lastName" column="last_name" type="string" length="255" nullable="true"/>
+        <field name="middleName" column="middle_name" type="string" length="255" nullable="true"/>
+        <field name="emailConfirmed" column="email_confirmed" type="boolean">
+            <options>
+                <option name="default">false</option>
+            </options>
+        </field>
+        <field name="emailConfirmToken" column="email_confirm_token" type="string" length="255" nullable="true"/>
+        <field name="status" column="status" type="string" length="64" enum-type="Zentlix\Users\App\User\Domain\Status">
+            <options>
+                <option name="default">active</option>
+            </options>
+        </field>
+        <field name="password" column="password" type="string" length="255"/>
+        <embedded name="resetToken" class="Zentlix\Users\App\User\Domain\ResetToken"/>
+        <field name="newEmail" column="new_email" type="string" length="255"/>
+        <field name="newEmailToken" column="new_email_token" type="string" length="255" nullable="true"/>
+        <field name="lastLogin" column="last_login" type="datetime" nullable="true"/>
+        <field name="updatedAt" column="updated_at" type="datetime"/>
+        <field name="createdAt" column="created_at" type="datetime"/>
+
+        <many-to-many field="groups" target-entity="Zentlix\Users\App\User\Domain\UserGroup">
+            <join-table name="zx_user_groups">
+                <join-columns>
+                    <join-column name="user_uuid" referenced-column-name="uuid"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="group_uuid" referenced-column-name="uuid"/>
+                </inverse-join-columns>
+            </join-table>
+            <order-by>
+                <order-by-field name="sort" direction="ASC" />
+            </order-by>
+        </many-to-many>
+    </entity>
+</doctrine-mapping>

@@ -7,6 +7,10 @@
         <field name="title" column="title" type="string" length="255" />
         <field name="code" column="code" type="string" length="16" unique="true"/>
         <field name="countryCode" column="country_code" type="string" length="16"/>
-        <field name="sort" column="sort" type="integer"/>
+        <field name="sort" column="sort" type="integer">
+            <options>
+                <option name="default">1</option>
+            </options>
+        </field>
     </entity>
 </doctrine-mapping>

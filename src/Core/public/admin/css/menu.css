@@ -1,0 +1,43 @@
+.menu-item-wrapper .menu-item {
+    border: 1px solid #ddd;
+    position: relative;
+    padding: 10px 15px;
+    height: auto;
+    min-height: 20px;
+    width: 100%;
+    max-width: 385px;
+    overflow: hidden;
+    word-wrap: break-word;
+    margin-bottom: 9px;
+}
+.menu-item-wrapper .menu-item:hover {
+    cursor: pointer;
+}
+.menu-controls {
+    font-size: 12px;
+}
+#menu-items {
+    overflow-y: auto;
+}
+.menu-type {
+    padding: 12px 16px;
+    color: #666;
+    font-size: 12px;
+    line-height: 18px;
+}
+.menu-editable .menu-placeholder {
+    height: 42px;
+    width: 382px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+    max-width: calc(100% - 2px);
+    float: left;
+    display: list-item;
+    border: 1px dashed #b4b9be;
+}
+#menu-providers {
+    max-width: 385px;
+}
+.menu-item-form {
+    padding-top: 20px;
+}

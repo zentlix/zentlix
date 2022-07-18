@@ -1,3 +1,9 @@
 users:
+    auth_admin_panel: 'Login to the control panel'
+    authorization: 'Authorization'
+    authorization_required: 'Authentication Required'
+    email: 'Email'
     locale:
         code_already_exist: 'Language with symbol code %s already exists.'
+    password: 'Password'
+    auth_enter: 'Login'

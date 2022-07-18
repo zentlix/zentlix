@@ -13,8 +13,8 @@ use Zentlix\Users\App\Locale\Infrastructure\ReadModel\Repository\DoctrineLocaleR
 final class LocaleProjectionFactory extends Projector
 {
     public function __construct(
-        private readonly DoctrineLocaleRepository $repository)
-    {
+        private readonly DoctrineLocaleRepository $repository
+    ) {
     }
 
     /**
