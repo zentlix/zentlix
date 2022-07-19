@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ua" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="0" resname="users.auth_admin_panel">
+        <source>users.auth_admin_panel</source>
+        <target>Вхід в панель управління</target>
+      </trans-unit>
+      <trans-unit id="1" resname="users.authorization">
+        <source>users.authorization</source>
+        <target>Авторизація</target>
+      </trans-unit>
+      <trans-unit id="2" resname="users.authorization_required">
+        <source>users.authorization_required</source>
+        <target>Необхідна авторизація</target>
+      </trans-unit>
+      <trans-unit id="3" resname="users.email">
+        <source>users.email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="4" resname="users.locale.code_already_exist">
+        <source>users.locale.code_already_exist</source>
+        <target>Мова з кодом %s вже існує.</target>
+      </trans-unit>
+      <trans-unit id="5" resname="users.password">
+        <source>users.password</source>
+        <target>Пароль</target>
+      </trans-unit>
+      <trans-unit id="6" resname="users.auth_enter">
+        <source>users.auth_enter</source>
+        <target>Увійти</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,9 +1,0 @@
-users:
-    auth_admin_panel: 'Вхід в панель управління'
-    authorization: 'Авторизація'
-    authorization_required: 'Необхідна авторизація'
-    email: 'Email'
-    locale:
-        code_already_exist: 'Мова з кодом %s вже існує.'
-    password: 'Пароль'
-    auth_enter: 'Увійти'
