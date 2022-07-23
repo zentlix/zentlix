@@ -7,7 +7,7 @@ namespace Zentlix\Users\App\User\Application\Command;
 use Symfony\Component\Validator\Constraints;
 use Zentlix\Users\App\User\Domain\Role;
 
-class GroupCommand
+class UserGroupCommand
 {
     /** @psalm-var non-empty-string */
     #[Constraints\NotBlank]

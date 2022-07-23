@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Zentlix\Users\App\Locale\Domain\Event;
+namespace Zentlix\Users\App\User\Domain\Event;
 
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Broadway\Serializer\Serializable;
 use Symfony\Component\Uid\Uuid;
+use Zentlix\Users\App\User\Domain\Role;
 
-final class LocaleWasCreated implements Serializable
+final class UserGroupWasCreated implements Serializable
 {
     public function __construct(
         public Uuid $uuid,
@@ -20,11 +21,12 @@ final class LocaleWasCreated implements Serializable
         /** @psalm-var non-empty-string */
         public string $code,
 
-        /** @psalm-var non-empty-string */
-        public string $countryCode,
-
         /** @psalm-var positive-int */
-        public int $sort
+        public int $sort,
+
+        public Role $role,
+
+        public array $rights
     ) {
     }
 
@@ -36,22 +38,25 @@ final class LocaleWasCreated implements Serializable
         Assertion::keyExists($data, 'uuid');
         Assertion::keyExists($data, 'title');
         Assertion::keyExists($data, 'code');
-        Assertion::keyExists($data, 'country_code');
         Assertion::keyExists($data, 'sort');
+        Assertion::keyExists($data, 'role');
+        Assertion::keyExists($data, 'rights');
 
         Assertion::uuid($data['uuid']);
         Assertion::string($data['title']);
         Assertion::string($data['code']);
-        Assertion::string($data['country_code']);
         Assertion::integer($data['sort']);
+        Assertion::string($data['role']);
+        Assertion::array($data['rights']);
 
         /** @psalm-suppress ArgumentTypeCoercion */
         return new self(
             Uuid::fromString($data['uuid']),
             $data['title'],
             $data['code'],
-            $data['country_code'],
-            $data['sort']
+            $data['sort'],
+            Role::from($data['role']),
+            $data['rights']
         );
     }
 
@@ -61,8 +66,9 @@ final class LocaleWasCreated implements Serializable
             'uuid' => $this->uuid->toRfc4122(),
             'title' => $this->title,
             'code' => $this->code,
-            'country_code' => $this->countryCode,
             'sort' => $this->sort,
+            'role' => $this->role->value,
+            'rights' => $this->rights,
         ];
     }
 }

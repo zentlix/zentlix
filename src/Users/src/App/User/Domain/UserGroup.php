@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Zentlix\Users\App\User\Domain;
 
+use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use Symfony\Component\Uid\Uuid;
-use Zentlix\Users\App\User\Application\Command\CreateGroupCommand;
-use Zentlix\Users\App\User\Application\Command\UpdateGroupCommand;
+use Zentlix\Users\App\User\Application\Command\CreateUserGroupCommand;
+use Zentlix\Users\App\User\Domain\Event\UserGroupWasCreated;
+use Zentlix\Users\App\User\Domain\Service\UserGroupValidatorInterface;
 
-class UserGroup
+class UserGroup extends EventSourcedAggregateRoot
 {
     private Uuid $uuid;
 
@@ -25,16 +27,18 @@ class UserGroup
 
     private array $rights = [];
 
-    public function __construct(CreateGroupCommand $command)
+    public function __construct(CreateUserGroupCommand $command, UserGroupValidatorInterface $validator)
     {
-        $this->uuid = $command->uuid;
+        $validator->preCreate($command);
 
-        $this->setValuesFromCommands($command);
-    }
-
-    public function update(UpdateGroupCommand $command): void
-    {
-        $this->setValuesFromCommands($command);
+        $this->apply(new UserGroupWasCreated(
+            $command->uuid,
+            $command->title,
+            $command->code,
+            $command->sort,
+            $command->role,
+            $command->rights
+        ));
     }
 
     public function getUuid(): Uuid
@@ -86,12 +90,18 @@ class UserGroup
         return true; // TODO
     }
 
-    private function setValuesFromCommands(CreateGroupCommand|UpdateGroupCommand $command): void
+    public function getAggregateRootId(): string
     {
-        $this->title = $command->title;
-        $this->code = $command->code;
-        $this->role = $command->role;
-        $this->sort = $command->sort;
-        $this->rights = $command->rights;
+        return $this->uuid->toRfc4122();
+    }
+
+    protected function applyUserGroupWasCreated(UserGroupWasCreated $event): void
+    {
+        $this->uuid = $event->uuid;
+        $this->title = $event->title;
+        $this->code = $event->code;
+        $this->role = $event->role;
+        $this->sort = $event->sort;
+        $this->rights = $event->rights;
     }
 }

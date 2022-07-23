@@ -7,7 +7,7 @@ namespace Zentlix\Users\App\User\Application\Command;
 use Zentlix\Core\App\Shared\Application\Command\UpdateCommandInterface;
 use Zentlix\Users\App\User\Domain\UserGroup;
 
-final class UpdateGroupCommand extends GroupCommand implements UpdateCommandInterface
+final class UpdateUserGroupCommand extends UserGroupCommand implements UpdateCommandInterface
 {
     public function __construct(UserGroup $group)
     {

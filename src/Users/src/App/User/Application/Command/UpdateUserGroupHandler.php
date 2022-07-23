@@ -6,13 +6,13 @@ namespace Zentlix\Users\App\User\Application\Command;
 
 use Zentlix\Core\App\Shared\Application\Command\CommandHandlerInterface;
 
-final class CreateGroupHandler implements CommandHandlerInterface
+final class UpdateUserGroupHandler implements CommandHandlerInterface
 {
     public function __construct(
     ) {
     }
 
-    public function __invoke(CreateGroupCommand $command): void
+    public function __invoke(UpdateUserGroupCommand $command): void
     {
     }
 }

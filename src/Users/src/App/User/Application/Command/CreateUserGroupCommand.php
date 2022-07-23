@@ -9,11 +9,10 @@ use Symfony\Component\Validator\Constraints;
 use Zentlix\Core\App\Shared\Application\Command\CreateCommandInterface;
 use Zentlix\Users\App\User\Domain\Role;
 
-final class CreateGroupCommand extends GroupCommand implements CreateCommandInterface
+final class CreateUserGroupCommand extends UserGroupCommand implements CreateCommandInterface
 {
-    /** @psalm-readonly */
     #[Constraints\Uuid]
-    public readonly Uuid $uuid;
+    public Uuid $uuid;
 
     public function __construct()
     {

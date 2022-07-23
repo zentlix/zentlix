@@ -10,12 +10,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zentlix\Core\App\Shared\Application\Command\CommandBusInterface;
 use Zentlix\Core\App\Shared\Application\Query\QueryBusInterface;
 use Zentlix\Users\App\Locale\Domain\Service\LocaleValidatorInterface;
-use Zentlix\Users\App\Locale\Domain\Specification\UniqueCodeSpecificationInterface;
+use Zentlix\Users\App\Locale\Domain\Specification\UniqueCodeSpecificationInterface as LocaleUniqueCodeSpecification;
 use Zentlix\Users\App\Locale\Infrastructure\Service\LocaleValidator;
+use Zentlix\Users\App\User\Domain\Service\UserGroupValidatorInterface;
+use Zentlix\Users\App\User\Domain\Specification\UniqueCodeSpecificationInterface as UserGroupUniqueCodeSpecification;
 use Zentlix\Users\App\User\Infrastructure\Auth\AuthProvider;
 use Zentlix\Users\App\User\Infrastructure\Auth\Guard\AdminAuthenticator;
 use Zentlix\Users\App\User\Infrastructure\Auth\Guard\PersonalAuthenticator;
 use Zentlix\Users\App\User\Infrastructure\ReadModel\Repository\DoctrineUserRepository;
+use Zentlix\Users\App\User\Infrastructure\Service\UserGroupValidator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
@@ -24,7 +27,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(LocaleValidatorInterface::class, LocaleValidator::class)
             ->args([
                 service(ValidatorInterface::class),
-                service(UniqueCodeSpecificationInterface::class),
+                service(LocaleUniqueCodeSpecification::class),
+            ])
+
+        ->set(UserGroupValidatorInterface::class, UserGroupValidator::class)
+            ->args([
+                service(ValidatorInterface::class),
+                service(UserGroupUniqueCodeSpecification::class),
             ])
 
         ->set(AuthProvider::class)
