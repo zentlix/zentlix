@@ -8,31 +8,24 @@ use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Broadway\Serializer\Serializable;
 use Symfony\Component\Uid\Uuid;
-use Zentlix\Users\App\Locale\Application\Command\CreateCommand;
 
 final class LocaleWasCreated implements Serializable
 {
-    public Uuid $uuid;
+    public function __construct(
+        public Uuid $uuid,
 
-    /** @psalm-var non-empty-string */
-    public string $title;
+        /** @psalm-var non-empty-string */
+        public string $title,
 
-    /** @psalm-var non-empty-string */
-    public string $code;
+        /** @psalm-var non-empty-string */
+        public string $code,
 
-    /** @psalm-var non-empty-string */
-    public string $countryCode;
+        /** @psalm-var non-empty-string */
+        public string $countryCode,
 
-    /** @psalm-var positive-int */
-    public int $sort;
-
-    public function __construct(CreateCommand $command)
-    {
-        $this->uuid = $command->uuid;
-        $this->title = $command->title;
-        $this->code = $command->code;
-        $this->countryCode = $command->countryCode;
-        $this->sort = $command->sort;
+        /** @psalm-var positive-int */
+        public int $sort
+    ) {
     }
 
     /**
@@ -46,14 +39,19 @@ final class LocaleWasCreated implements Serializable
         Assertion::keyExists($data, 'country_code');
         Assertion::keyExists($data, 'sort');
 
-        $command = new CreateCommand();
-        $command->uuid = Uuid::fromString($data['uuid']);
-        $command->title = $data['title'];
-        $command->code = $data['code'];
-        $command->countryCode = $data['country_code'];
-        $command->sort = $data['sort'];
+        Assertion::uuid($data['uuid']);
+        Assertion::string($data['title']);
+        Assertion::string($data['code']);
+        Assertion::string($data['country_code']);
+        Assertion::integer($data['sort']);
 
-        return new self($command);
+        return new self(
+            Uuid::fromString($data['uuid']),
+            $data['title'],
+            $data['code'],
+            $data['country_code'],
+            $data['sort']
+        );
     }
 
     public function serialize(): array

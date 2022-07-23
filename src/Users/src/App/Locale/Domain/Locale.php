@@ -30,7 +30,13 @@ class Locale extends EventSourcedAggregateRoot
     {
         $validator->preCreate($command);
 
-        $this->apply(new LocaleWasCreated($command));
+        $this->apply(new LocaleWasCreated(
+            $command->uuid,
+            $command->title,
+            $command->code,
+            $command->countryCode,
+            $command->sort
+        ));
     }
 
     public function getUuid(): Uuid
