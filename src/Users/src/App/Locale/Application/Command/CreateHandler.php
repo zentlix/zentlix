@@ -9,11 +9,11 @@ use Zentlix\Users\App\Locale\Domain\Locale;
 use Zentlix\Users\App\Locale\Domain\Repository\LocaleRepositoryInterface;
 use Zentlix\Users\App\Locale\Domain\Service\LocaleValidatorInterface;
 
-class CreateHandler implements CommandHandlerInterface
+final class CreateHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private LocaleRepositoryInterface $localeRepository,
-        private LocaleValidatorInterface $validator
+        private readonly LocaleRepositoryInterface $localeRepository,
+        private readonly LocaleValidatorInterface $validator
     ) {
     }
 

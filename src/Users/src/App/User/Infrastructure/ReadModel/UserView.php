@@ -7,6 +7,7 @@ namespace Zentlix\Users\App\User\Infrastructure\ReadModel;
 use Assert\Assertion;
 use Broadway\ReadModel\SerializableReadModel;
 use Broadway\Serializer\Serializable;
+use Doctrine\Common\Collections\Collection;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -58,7 +59,7 @@ class UserView implements SerializableReadModel, UserInterface, PasswordAuthenti
     public ?string $emailConfirmToken = null;
 
     #[Ignore]
-    public array $groups = [];
+    public Collection $groups;
 
     #[OA\Property(
         property: 'status',

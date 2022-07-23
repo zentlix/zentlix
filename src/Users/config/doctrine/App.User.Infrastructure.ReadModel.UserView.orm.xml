@@ -27,7 +27,7 @@
         <field name="updatedAt" column="updated_at" type="datetime"/>
         <field name="createdAt" column="created_at" type="datetime"/>
 
-        <many-to-many field="groups" target-entity="Zentlix\Users\App\User\Domain\UserGroup">
+        <many-to-many field="groups" target-entity="Zentlix\Users\App\User\Infrastructure\ReadModel\UserGroupView">
             <join-table name="zx_user_groups">
                 <join-columns>
                     <join-column name="user_uuid" referenced-column-name="uuid"/>
