@@ -42,6 +42,11 @@ final class DoctrineLocaleRepository extends DoctrineRepository implements Local
         $this->register($localeRead);
     }
 
+    public function findOneByUuid(Uuid $uuid): ?LocaleView
+    {
+        return $this->repository->findOneBy(['uuid' => $uuid->toRfc4122()]);
+    }
+
     public function page(int $page, int $limit): PaginationInterface
     {
         $query = $this->repository

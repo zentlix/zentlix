@@ -11,6 +11,7 @@ use Zentlix\Users\App\Locale\Infrastructure\Repository\LocaleStore;
 use Zentlix\Users\App\User\Infrastructure\ReadModel\Repository\DoctrineUserGroupRepository;
 use Zentlix\Users\App\User\Infrastructure\ReadModel\Repository\DoctrineUserRepository;
 use Zentlix\Users\App\User\Infrastructure\Repository\UserGroupStore;
+use Zentlix\Users\App\User\Infrastructure\Repository\UserStore;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
@@ -19,7 +20,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service(EntityManagerInterface::class),
                 service('knp_paginator'),
             ])
-
         ->set(LocaleStore::class)
             ->args([
                 service(EventStore::class),
@@ -31,13 +31,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service(EntityManagerInterface::class),
                 service('knp_paginator'),
             ])
+        ->set(UserStore::class)
+            ->args([
+                service(EventStore::class),
+                service('broadway.event_handling.event_bus'),
+            ])
 
         ->set(DoctrineUserGroupRepository::class)
             ->args([
                 service(EntityManagerInterface::class),
                 service('knp_paginator'),
             ])
-
         ->set(UserGroupStore::class)
             ->args([
                 service(EventStore::class),

@@ -30,6 +30,14 @@
         <source>users.auth_enter</source>
         <target>Увійти</target>
       </trans-unit>
+      <trans-unit id="7" resname="users.email.already_exists">
+        <source>users.email.already_exists</source>
+        <target>Користувач з Email `%email%` вже існує.</target>
+      </trans-unit>
+      <trans-unit id="8" resname="users.group.is_not_exists">
+        <source>users.group.is_not_exists</source>
+        <target>Група користувача з UUID `%uuid%` не знайдена.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

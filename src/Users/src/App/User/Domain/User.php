@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Zentlix\Users\App\User\Domain;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Uid\Uuid;
-use Zentlix\Users\App\Locale\Domain\Locale;
 use Zentlix\Users\App\User\Application\Command\CreateUserCommand;
-use Zentlix\Users\App\User\Application\Command\UpdateUserCommand;
+use Zentlix\Users\App\User\Domain\Event\UserWasCreated;
+use Zentlix\Users\App\User\Domain\Service\UserValidatorInterface;
 use Zentlix\Users\App\User\Domain\ValueObject\Email;
 
-class User
+class User extends EventSourcedAggregateRoot
 {
     private Uuid $uuid;
     private Email $email;
@@ -27,24 +27,30 @@ class User
     private ResetToken $resetToken;
     private ?Email $newEmail = null;
     private ?string $newEmailToken = null;
-    private ?Locale $locale = null;
+    private ?Uuid $locale = null;
     private ?\DateTimeInterface $lastLogin = null;
     private \DateTimeInterface $updatedAt;
     private \DateTimeInterface $createdAt;
 
-    public function __construct(CreateUserCommand $command)
+    public function __construct(CreateUserCommand $command, UserValidatorInterface $validator)
     {
-        $this->uuid = $command->uuid;
-        $this->emailConfirmToken = $command->emailConfirmToken;
-        $this->emailConfirmed = $command->emailConfirmed;
-        $this->resetToken = new ResetToken();
+        $validator->preCreate($command);
 
-        $this->setValuesFromCommand($command);
-    }
-
-    public function update(UpdateUserCommand $command): void
-    {
-        $this->setValuesFromCommand($command);
+        $this->apply(new UserWasCreated(
+            $command->uuid,
+            $command->getEmail(),
+            $command->password,
+            $command->getGroups(),
+            $command->status,
+            $command->emailConfirmed,
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
+            $command->firstName,
+            $command->lastName,
+            $command->middleName,
+            $command->getLocale(),
+            $command->emailConfirmToken
+        ));
     }
 
     public function getUuid(): Uuid
@@ -82,35 +88,14 @@ class User
         return $this->email->getValue();
     }
 
-    public function getLocale(): ?Locale
+    public function getLocale(): ?Uuid
     {
         return $this->locale;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = [];
-        /** @var UserGroup $group */
-        foreach ($this->groups->getValues() as $group) {
-            $roles[] = $group->getRole()->value;
-        }
-
-        // guarantee every user at least has ROLE_USER
-        $roles[] = Role::USER->value;
-
-        return array_unique($roles);
     }
 
     public function getPassword(): string
     {
         return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
     }
 
     public function getGroups(): Collection
@@ -148,23 +133,6 @@ class User
         return $this;
     }
 
-    public function isAdminRole(): bool
-    {
-        return \in_array(Role::ADMIN, $this->getRoles());
-    }
-
-    public function isAdminGroup(): bool
-    {
-        /** @var UserGroup $group */
-        foreach ($this->groups->getValues() as $group) {
-            if ($group->isAdminGroup()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public function isEmailConfirmed(): bool
     {
         return $this->emailConfirmed;
@@ -185,31 +153,25 @@ class User
         return Status::WAIT === $this->status;
     }
 
-    public function isAccessGranted(string $command): bool
+    public function getAggregateRootId(): string
     {
-        if (!$this->isAdminRole() || !$this->isActive()) {
-            return false;
-        }
-
-        /** @var UserGroup $group $group */
-        foreach ($this->groups->getValues() as $group) {
-            if ($group->isAccessGranted()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->uuid->toRfc4122();
     }
 
-    private function setValuesFromCommand(CreateUserCommand|UpdateUserCommand $command): void
+    protected function applyUserWasCreated(UserWasCreated $event): void
     {
-        $this->email = $command->getEmail();
-        $this->status = $command->status;
-        $this->firstName = $command->firstName;
-        $this->lastName = $command->lastName;
-        $this->middleName = $command->middleName;
-        $this->createdAt = $command->createdAt;
-        $this->updatedAt = $command->updatedAt;
-        $this->groups = new ArrayCollection($command->groups);
+        $this->uuid = $event->uuid;
+        $this->email = $event->email;
+        $this->firstName = $event->firstName;
+        $this->lastName = $event->lastName;
+        $this->middleName = $event->middleName;
+        $this->groups = $event->groups;
+        $this->status = $event->status;
+        $this->password = $event->password;
+        $this->locale = $event->locale;
+        $this->createdAt = $event->createdAt;
+        $this->updatedAt = $event->updatedAt;
+        $this->emailConfirmed = $event->emailConfirmed;
+        $this->emailConfirmToken = $event->emailConfirmToken;
     }
 }

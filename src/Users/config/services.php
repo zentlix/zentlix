@@ -13,12 +13,16 @@ use Zentlix\Users\App\Locale\Domain\Service\LocaleValidatorInterface;
 use Zentlix\Users\App\Locale\Domain\Specification\UniqueCodeSpecificationInterface as LocaleUniqueCodeSpecification;
 use Zentlix\Users\App\Locale\Infrastructure\Service\LocaleValidator;
 use Zentlix\Users\App\User\Domain\Service\UserGroupValidatorInterface;
+use Zentlix\Users\App\User\Domain\Service\UserValidatorInterface;
+use Zentlix\Users\App\User\Domain\Specification\ExistUserGroupSpecificationInterface;
 use Zentlix\Users\App\User\Domain\Specification\UniqueCodeSpecificationInterface as UserGroupUniqueCodeSpecification;
+use Zentlix\Users\App\User\Domain\Specification\UniqueEmailSpecificationInterface;
 use Zentlix\Users\App\User\Infrastructure\Auth\AuthProvider;
 use Zentlix\Users\App\User\Infrastructure\Auth\Guard\AdminAuthenticator;
 use Zentlix\Users\App\User\Infrastructure\Auth\Guard\PersonalAuthenticator;
 use Zentlix\Users\App\User\Infrastructure\ReadModel\Repository\DoctrineUserRepository;
 use Zentlix\Users\App\User\Infrastructure\Service\UserGroupValidator;
+use Zentlix\Users\App\User\Infrastructure\Service\UserValidator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
@@ -28,6 +32,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 service(ValidatorInterface::class),
                 service(LocaleUniqueCodeSpecification::class),
+            ])
+
+        ->set(UserValidatorInterface::class, UserValidator::class)
+            ->args([
+                service(ValidatorInterface::class),
+                service(UniqueEmailSpecificationInterface::class),
+                service(ExistUserGroupSpecificationInterface::class),
             ])
 
         ->set(UserGroupValidatorInterface::class, UserGroupValidator::class)

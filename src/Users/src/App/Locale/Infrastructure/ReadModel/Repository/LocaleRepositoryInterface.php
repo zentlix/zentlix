@@ -19,4 +19,6 @@ interface LocaleRepositoryInterface
     public function add(LocaleView $localeRead): void;
 
     public function page(int $page, int $limit): PaginationInterface;
+
+    public function findOneByUuid(Uuid $uuid): ?LocaleView;
 }

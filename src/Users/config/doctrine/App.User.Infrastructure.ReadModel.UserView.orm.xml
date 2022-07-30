@@ -21,7 +21,7 @@
         </field>
         <field name="password" column="password" type="string" length="255"/>
         <embedded name="resetToken" class="Zentlix\Users\App\User\Domain\ResetToken"/>
-        <field name="newEmail" column="new_email" type="string" length="255"/>
+        <field name="newEmail" column="new_email" type="string" length="255" nullable="true"/>
         <field name="newEmailToken" column="new_email_token" type="string" length="255" nullable="true"/>
         <field name="lastLogin" column="last_login" type="datetime" nullable="true"/>
         <field name="updatedAt" column="updated_at" type="datetime"/>

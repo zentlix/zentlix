@@ -30,6 +30,14 @@
         <source>users.auth_enter</source>
         <target>Login</target>
       </trans-unit>
+      <trans-unit id="7" resname="users.email.already_exists">
+        <source>users.email.already_exists</source>
+        <target>The user with Email `%email%` already exists.</target>
+      </trans-unit>
+      <trans-unit id="8" resname="users.group.is_not_exists">
+        <source>users.group.is_not_exists</source>
+        <target>The user group with UUID `%uuid%` isn't exists.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -11,6 +11,7 @@ use Zentlix\Users\App\Locale\Application\Query\GetLocalesHandler;
 use Zentlix\Users\App\Locale\Domain as LocaleDomain;
 use Zentlix\Users\App\Locale\Infrastructure;
 use Zentlix\Users\App\User\Application\Command\CreateUserGroupHandler;
+use Zentlix\Users\App\User\Application\Command\CreateUserHandler;
 use Zentlix\Users\App\User\Domain as UserDomain;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -25,6 +26,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 service(LocaleDomain\Repository\LocaleRepositoryInterface::class),
                 service(LocaleDomain\Service\LocaleValidatorInterface::class),
+            ])
+
+        ->set(CreateUserHandler::class)
+            ->args([
+                service(UserDomain\Repository\UserRepositoryInterface::class),
+                service(UserDomain\Service\UserValidatorInterface::class),
+                service('security.password_hasher'),
             ])
 
         ->set(CreateUserGroupHandler::class)
