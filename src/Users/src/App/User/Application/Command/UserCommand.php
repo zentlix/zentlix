@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Zentlix\Users\App\User\Application\Command;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints;
-use Zentlix\Users\App\Locale\Domain\Locale;
 use Zentlix\Users\App\User\Domain\Status;
 use Zentlix\Users\App\User\Domain\ValueObject\Email;
 
@@ -18,14 +20,12 @@ class UserCommand
     public ?string $firstName = null;
     public ?string $lastName = null;
     public ?string $middleName = null;
-    public array $groups = [];
+    protected Collection $groups;
 
     #[Constraints\NotBlank]
     public Status $status;
 
-    public Locale|string|null $locale = null;
-    public \DateTimeInterface $updatedAt;
-    public \DateTimeInterface $createdAt;
+    protected ?Uuid $locale = null;
 
     public function getEmail(): Email
     {
@@ -37,5 +37,31 @@ class UserCommand
         $this->email = new Email($email);
 
         return $this;
+    }
+
+    public function getLocale(): ?Uuid
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale = null): self
+    {
+        if (null !== $locale) {
+            $this->locale = Uuid::fromString($locale);
+        }
+
+        return $this;
+    }
+
+    public function setGroups(array $groups): self
+    {
+        $this->groups = new ArrayCollection($groups);
+
+        return $this;
+    }
+
+    public function getGroups(): Collection
+    {
+        return $this->groups;
     }
 }

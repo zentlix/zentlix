@@ -7,7 +7,7 @@ namespace Zentlix\Users\App\User\Domain\Exception;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Zentlix\Core\App\Shared\Domain\Exception\ValidationException;
 
-class UserGroupValidationException extends ValidationException
+final class UserGroupValidationException extends ValidationException
 {
     public function __construct(ConstraintViolationListInterface $errors)
     {

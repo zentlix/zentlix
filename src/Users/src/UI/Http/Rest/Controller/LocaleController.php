@@ -88,7 +88,7 @@ class LocaleController extends QueryController
     {
         $page = $request->query->get('page', 1);
         $limit = $request->query->get('limit', 25);
-        $sort = $request->query->get('sort', 'sort');
+        $sort = $request->query->get('sort', 'locale.sort');
         $direction = $request->query->get('direction', 'asc');
 
         Assertion::numeric($page, 'Page number must be an integer');

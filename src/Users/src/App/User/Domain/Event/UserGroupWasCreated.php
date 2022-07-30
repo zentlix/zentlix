@@ -47,7 +47,7 @@ final class UserGroupWasCreated implements Serializable
         Assertion::string($data['code']);
         Assertion::integer($data['sort']);
         Assertion::string($data['role']);
-        Assertion::array($data['rights']);
+        Assertion::isArray($data['rights']);
 
         /** @psalm-suppress ArgumentTypeCoercion */
         return new self(

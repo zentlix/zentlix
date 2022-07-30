@@ -16,10 +16,9 @@ final class CreateUserCommand extends UserCommand implements CreateCommandInterf
     public readonly Uuid $uuid;
 
     #[Constraints\NotBlank]
-    public string $plainPassword;
+    public string $password;
 
     public readonly bool $emailConfirmed;
-
     public readonly string $emailConfirmToken;
 
     public function __construct()
@@ -28,7 +27,5 @@ final class CreateUserCommand extends UserCommand implements CreateCommandInterf
         $this->status = Status::ACTIVE;
         $this->emailConfirmToken = Uuid::v4()->toRfc4122();
         $this->emailConfirmed = false;
-        $this->updatedAt = new \DateTimeImmutable();
-        $this->createdAt = new \DateTimeImmutable();
     }
 }
